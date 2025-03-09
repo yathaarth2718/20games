@@ -10,8 +10,6 @@ func _ready() -> void:
 	print(x)
 	velocity = Vector2(x * SPEED, 0)	
 	
-	
-
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta: float) -> void:

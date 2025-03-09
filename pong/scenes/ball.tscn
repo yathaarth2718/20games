@@ -10,5 +10,10 @@ script = ExtResource("1_cxlvu")
 scale = Vector2(2, 2)
 texture = ExtResource("2_f7cbr")
 
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Area2D"]
+polygon = PackedVector2Array(-4, -18, 4, -18, 8, -16, 14, -10, 16, -6, 16, 4, 14, 8, 8, 14, 4, 16, -4, 16, -8, 14, -14, 8, -16, 4, -16, -6, -14, -10, -8, -16)
+
+[node name="CollisionPolygon2D2" type="CollisionPolygon2D" parent="."]
 polygon = PackedVector2Array(-4, -18, 4, -18, 8, -16, 14, -10, 16, -6, 16, 4, 14, 8, 8, 14, 4, 16, -4, 16, -8, 14, -14, 8, -16, 4, -16, -6, -14, -10, -8, -16)

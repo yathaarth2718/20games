@@ -1,3 +1,108 @@
-[gd_scene format=3 uid="uid://cuvfxi7788hqi"]
+[gd_scene load_steps=10 format=3 uid="uid://cuvfxi7788hqi"]
+
+[ext_resource type="Script" uid="uid://cgn8w3p3sty8h" path="res://scripts/gameManger.gd" id="1_iywne"]
+[ext_resource type="PackedScene" uid="uid://c5o7fc8cses7p" path="res://scenes/player1.tscn" id="1_lnu2h"]
+[ext_resource type="Script" uid="uid://cwj6m6eqv4aa2" path="res://scripts/game.gd" id="1_p57ef"]
+[ext_resource type="PackedScene" uid="uid://6rwfdj0061hg" path="res://scenes/player2.tscn" id="2_lbhrr"]
+[ext_resource type="Texture2D" uid="uid://dnyur6ty044pt" path="res://assets/platform.png" id="5_iywne"]
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_u5sy4"]
+a = Vector2(573, 0)
+b = Vector2(-573, 0)
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_gee14"]
+a = Vector2(573, 0)
+b = Vector2(-573, 0)
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_iywne"]
+a = Vector2(359, 0)
+b = Vector2(-359, 0)
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_p57ef"]
+a = Vector2(359, 0)
+b = Vector2(-359, 10)
 
 [node name="Game" type="Node2D"]
+script = ExtResource("1_p57ef")
+
+[node name="GameManger" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("1_iywne")
+
+[node name="scoreLabelP1" type="Label" parent="GameManger"]
+offset_left = -365.0
+offset_top = -356.0
+offset_right = -274.0
+offset_bottom = -331.0
+text = "P1 Score: "
+
+[node name="scoreLabelP2" type="Label" parent="GameManger"]
+offset_left = 384.0
+offset_top = -354.0
+offset_right = 424.0
+offset_bottom = -331.0
+text = "P2 Score: "
+metadata/_edit_use_anchors_ = true
+
+[node name="player1" parent="." instance=ExtResource("1_lnu2h")]
+position = Vector2(-476, 0)
+motion_mode = 1
+
+[node name="player2" parent="." instance=ExtResource("2_lbhrr")]
+position = Vector2(476, 0)
+motion_mode = 1
+
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(1, 0.9)
+
+[node name="topBottomWalls" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="topBottomWalls"]
+position = Vector2(0, -324)
+rotation = 3.14159
+shape = SubResource("SegmentShape2D_u5sy4")
+
+[node name="Sprite2D" type="Sprite2D" parent="topBottomWalls/CollisionShape2D"]
+rotation = 1.5708
+scale = Vector2(1.2, 40)
+texture = ExtResource("5_iywne")
+region_enabled = true
+region_rect = Rect2(0, 0, 4, 32)
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="topBottomWalls"]
+position = Vector2(0, 324)
+shape = SubResource("SegmentShape2D_gee14")
+
+[node name="Sprite2D" type="Sprite2D" parent="topBottomWalls/CollisionShape2D2"]
+rotation = 1.5708
+scale = Vector2(1.2, 40)
+texture = ExtResource("5_iywne")
+region_enabled = true
+region_rect = Rect2(8, 0, 4, 32)
+
+[node name="goalWalls" type="Node2D" parent="."]
+
+[node name="leftArea" type="Area2D" parent="goalWalls"]
+position = Vector2(-576, 0)
+
+[node name="leftWall" type="CollisionShape2D" parent="goalWalls/leftArea"]
+rotation = 1.5708
+shape = SubResource("SegmentShape2D_iywne")
+
+[node name="Timer" type="Timer" parent="goalWalls/leftArea"]
+one_shot = true
+
+[node name="rightArea" type="Area2D" parent="goalWalls"]
+position = Vector2(576, 0)
+
+[node name="rightWall" type="CollisionShape2D" parent="goalWalls/rightArea"]
+rotation = -1.5708
+shape = SubResource("SegmentShape2D_p57ef")
+
+[node name="Timer" type="Timer" parent="goalWalls/rightArea"]
+one_shot = true
+
+[connection signal="body_entered" from="goalWalls/leftArea" to="." method="_on_left_area_body_entered"]
+[connection signal="timeout" from="goalWalls/leftArea/Timer" to="." method="_on_timerP1_timeout"]
+[connection signal="body_entered" from="goalWalls/rightArea" to="." method="_on_right_area_body_entered"]
+[connection signal="timeout" from="goalWalls/rightArea/Timer" to="." method="_on_timer_timeout"]

@@ -1,6 +1,6 @@
 extends CharacterBody2D
 
-const SPEED = 300
+const SPEED = 350
 
 func getYDir():
 	return Input.get_action_strength("playerOneDown") - Input.get_action_strength("playerOneUp")
