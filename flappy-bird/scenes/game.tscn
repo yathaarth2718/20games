@@ -1,3 +1,30 @@
-[gd_scene format=3 uid="uid://cdplod0yptgvc"]
+[gd_scene load_steps=6 format=3 uid="uid://cdplod0yptgvc"]
+
+[ext_resource type="PackedScene" uid="uid://c3rkr3741ew1s" path="res://scenes/bird.tscn" id="1_uwrxv"]
+[ext_resource type="Texture2D" uid="uid://cywfqcnb0xpjf" path="res://assets/background-building-flappy-pixilart.png" id="2_yqjtg"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_lnu2h"]
+texture = ExtResource("2_yqjtg")
+texture_region_size = Vector2i(32, 32)
+0:0/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_lbhrr"]
+tile_size = Vector2i(32, 32)
+sources/1 = SubResource("TileSetAtlasSource_lnu2h")
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_uwrxv"]
+distance = -307.0
 
 [node name="Game" type="Node"]
+
+[node name="TileMapLayer" type="TileMapLayer" parent="."]
+tile_set = SubResource("TileSet_lbhrr")
+
+[node name="Bird" parent="." instance=ExtResource("1_uwrxv")]
+
+[node name="Camera2D" type="Camera2D" parent="Bird"]
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+shape = SubResource("WorldBoundaryShape2D_uwrxv")
