@@ -1,7 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://cdplod0yptgvc"]
+[gd_scene load_steps=7 format=3 uid="uid://cdplod0yptgvc"]
 
 [ext_resource type="PackedScene" uid="uid://c3rkr3741ew1s" path="res://scenes/bird.tscn" id="1_uwrxv"]
 [ext_resource type="Texture2D" uid="uid://cywfqcnb0xpjf" path="res://assets/background-building-flappy-pixilart.png" id="2_yqjtg"]
+[ext_resource type="PackedScene" uid="uid://bqc0v8ljqf3ej" path="res://scenes/killbox.tscn" id="3_lnu2h"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_lnu2h"]
 texture = ExtResource("2_yqjtg")
@@ -22,9 +23,12 @@ tile_set = SubResource("TileSet_lbhrr")
 
 [node name="Bird" parent="." instance=ExtResource("1_uwrxv")]
 
-[node name="Camera2D" type="Camera2D" parent="Bird"]
-
 [node name="StaticBody2D" type="StaticBody2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
 shape = SubResource("WorldBoundaryShape2D_uwrxv")
+
+[node name="RigidBody2D" parent="." instance=ExtResource("3_lnu2h")]
+position = Vector2(100, 0)
+
+[node name="Camera2D" type="Camera2D" parent="."]
