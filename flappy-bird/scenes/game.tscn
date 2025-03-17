@@ -1,34 +1,43 @@
 [gd_scene load_steps=7 format=3 uid="uid://cdplod0yptgvc"]
 
+[ext_resource type="Script" uid="uid://c6v122xti4k4d" path="res://scripts/game.gd" id="1_lbhrr"]
 [ext_resource type="PackedScene" uid="uid://c3rkr3741ew1s" path="res://scenes/bird.tscn" id="1_uwrxv"]
-[ext_resource type="Texture2D" uid="uid://cywfqcnb0xpjf" path="res://assets/background-building-flappy-pixilart.png" id="2_yqjtg"]
-[ext_resource type="PackedScene" uid="uid://bqc0v8ljqf3ej" path="res://scenes/killbox.tscn" id="3_lnu2h"]
-
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_lnu2h"]
-texture = ExtResource("2_yqjtg")
-texture_region_size = Vector2i(32, 32)
-0:0/0 = 0
-
-[sub_resource type="TileSet" id="TileSet_lbhrr"]
-tile_size = Vector2i(32, 32)
-sources/1 = SubResource("TileSetAtlasSource_lnu2h")
-
-[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_uwrxv"]
-distance = -307.0
+[ext_resource type="PackedScene" uid="uid://bvngs3q3xp5x2" path="res://scenes/pipe.tscn" id="2_iywne"]
+[ext_resource type="Texture2D" uid="uid://dijc73qmtx63g" path="res://assets/bg.png" id="4_iywne"]
+[ext_resource type="PackedScene" uid="uid://cdaa3hg0ue8an" path="res://scenes/ground.tscn" id="4_lbhrr"]
+[ext_resource type="PackedScene" uid="uid://dxpda6jcesw4f" path="res://scenes/game_over.tscn" id="6_p57ef"]
 
 [node name="Game" type="Node"]
+script = ExtResource("1_lbhrr")
+pipe_scene = ExtResource("2_iywne")
 
-[node name="TileMapLayer" type="TileMapLayer" parent="."]
-tile_set = SubResource("TileSet_lbhrr")
+[node name="Background" type="Sprite2D" parent="."]
+texture = ExtResource("4_iywne")
+offset = Vector2(432, 384)
+
+[node name="Ground" parent="." instance=ExtResource("4_lbhrr")]
+z_index = 1
 
 [node name="Bird" parent="." instance=ExtResource("1_uwrxv")]
+position = Vector2(0, -136)
 
-[node name="StaticBody2D" type="StaticBody2D" parent="."]
+[node name="PipeTimer" type="Timer" parent="."]
+wait_time = 1.5
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
-shape = SubResource("WorldBoundaryShape2D_uwrxv")
+[node name="ScoreLabel" type="Label" parent="."]
+z_index = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -36.5
+offset_right = 36.5
+offset_bottom = 23.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 40
+text = "SCORE: 0 "
 
-[node name="RigidBody2D" parent="." instance=ExtResource("3_lnu2h")]
-position = Vector2(100, 0)
+[node name="GameOver" parent="." instance=ExtResource("6_p57ef")]
 
-[node name="Camera2D" type="Camera2D" parent="."]
+[connection signal="hit" from="Ground" to="." method="_on_ground_hit"]
+[connection signal="timeout" from="PipeTimer" to="." method="_on_pipe_timer_timeout"]
+[connection signal="restart" from="GameOver" to="." method="_on_game_over_restart"]
